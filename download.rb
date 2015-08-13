@@ -38,7 +38,7 @@ class Fetcher < Struct.new(:base_url)
 
   def download_page page, sample_mp3_url
     log("[#] Download page: #{page}")
-    html = Net::HTTP.get_response(URI.parse(base_url)).body
+    html = Net::HTTP.get_response(URI.parse(page)).body
     urls = Nokogiri::HTML(html).css(".content a.titulo").map{|a| a['href']}
     urls.each do |url|
       audio_id = url.match(/-mp3_rf_(\d+)_1/)[1]
