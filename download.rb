@@ -48,11 +48,15 @@ class Fetcher < Struct.new(:base_url)
   end
 
   def download_audio audio_id, sample_mp3_url
-    sample_mp3_url = 'http://www.ivoox.com/episodio-38-piel-colgante-estrias-retencion-liquidos-dieta_mf_6614024_feed_1.mp3'
-    mp3_url = sample_mp3_url.gsub(/mf_\d+_feed/, "mf_#{audio_id}_feed")
+    if File.exists?("#{audio_id}.mp3")
+      log("[-] #{audio_id} - Already downloaded")
+    else
+      sample_mp3_url = 'http://www.ivoox.com/episodio-38-piel-colgante-estrias-retencion-liquidos-dieta_mf_6614024_feed_1.mp3'
+      mp3_url = sample_mp3_url.gsub(/mf_\d+_feed/, "mf_#{audio_id}_feed")
 
-    puts mp3_url
-    system "wget -nv -c #{mp3_url} -O #{audio_id}.mp3"
+      log("[*] URL: #{mp3_url}")
+      system "curl -L -C - -o #{audio_id}.mp3 #{mp3_url} -#"
+    end
   end
 
 end
